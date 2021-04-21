@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/argoproj/argocd-autopilot/pkg/application"
 	"github.com/argoproj/argocd-autopilot/pkg/fs"
@@ -15,6 +16,7 @@ import (
 
 	"github.com/ghodss/yaml"
 	memfs "github.com/go-git/go-billy/v5/memfs"
+	billyUtils "github.com/go-git/go-billy/v5/util"
 	"github.com/spf13/cobra"
 )
 
@@ -29,7 +31,7 @@ type (
 
 type (
 	AppListOptions struct {
-		EnvName      string
+		ProjectName      string
 		FS           fs.FS
 		CloneOptions *git.CloneOptions
 
@@ -239,7 +241,7 @@ func getCommitMsg(opts *AppCreateOptions) string {
 }
 func NewAppListCommand() *cobra.Command {
 	var (
-		envName   string
+		projectName   string
 	//	appListOpts   *application.
 		cloneOpts *git.CloneOptions
 	)
@@ -266,10 +268,11 @@ func NewAppListCommand() *cobra.Command {
 			if len(args) < 1 {
 				log.G().Fatal("must enter environment name")
 			}
+			projectName = args[0]
 
 
 			return RunAppList(cmd.Context(), &AppListOptions{
-				EnvName:      envName,
+				ProjectName:      projectName,
 				FS:           fs.Create(memfs.New()),
 				CloneOptions: cloneOpts,
 			})
@@ -285,7 +288,6 @@ func RunAppList(ctx context.Context, opts *AppListOptions) error {
 
 	var (
 		err error
-//		r git.Repository
 	)
 
 	log.G().WithFields(log.Fields{
@@ -295,7 +297,7 @@ func RunAppList(ctx context.Context, opts *AppListOptions) error {
 
 	// clone repo
 	log.G().Infof("cloning git repository: %s", opts.CloneOptions.URL)
-	r, opts.FS, err = opts.CloneOptions.Clone(ctx, opts.FS)
+	_, opts.FS, err = opts.CloneOptions.Clone(ctx, opts.FS)
 	if err != nil {
 		return err
 	}
@@ -305,15 +307,21 @@ func RunAppList(ctx context.Context, opts *AppListOptions) error {
 		log.G().Fatalf("Bootstrap folder not found, please execute `repo bootstrap --installation-path %s` command", opts.CloneOptions.RepoRoot)
 	}
 
-	envExists := opts.FS.ExistsOrDie(opts.FS.Join(store.Default.EnvsDir, opts.EnvName+".yaml"))
+	envExists := opts.FS.ExistsOrDie(opts.FS.Join(store.Default.ProjectsDir, opts.ProjectName+".yaml"))
 	if !envExists {
-		log.G().Fatalf(util.Doc(fmt.Sprintf("env '%[1]s' not found, please execute `<BIN> env create %[1]s`", opts.EnvName)))
+		log.G().Fatalf(util.Doc(fmt.Sprintf("env '%[1]s' not found, please execute `<BIN> env create %[1]s`", opts.ProjectName)))
 	}
 
 	log.G().Debug("repository is ok")
 
 	// get all apps beneath kustomize <env>\overlayes
 
+	matches, err := billyUtils.Glob(opts.FS, fmt.Sprintf("/kustomize/*/overlays/%s", opts.ProjectName))
+
+	for _, appName := range matches {
+
+		log.G().Info(strings.Split(appName, "/")[2])
+	}
 	return nil
 
 }
