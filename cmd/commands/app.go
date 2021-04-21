@@ -27,6 +27,15 @@ type (
 	}
 )
 
+type (
+	AppListOptions struct {
+		EnvName      string
+		FS           fs.FS
+		CloneOptions *git.CloneOptions
+
+	}
+)
+
 func NewAppCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:     "application",
@@ -39,6 +48,7 @@ func NewAppCommand() *cobra.Command {
 	}
 
 	cmd.AddCommand(NewAppCreateCommand())
+	cmd.AddCommand(NewAppListCommand())
 
 	return cmd
 }
@@ -226,4 +236,84 @@ func getCommitMsg(opts *AppCreateOptions) string {
 		commitMsg += fmt.Sprintf(" installation-path: '%s'", opts.CloneOptions.RepoRoot)
 	}
 	return commitMsg
+}
+func NewAppListCommand() *cobra.Command {
+	var (
+		envName   string
+	//	appListOpts   *application.
+		cloneOpts *git.CloneOptions
+	)
+
+	cmd := &cobra.Command{
+		Use:   "list [ENV_NAME]",
+		Short: "List all applications in an environment",
+		Example: util.Doc(`
+# To run this command you need to create a personal access token for your git provider,
+# and have a bootstrapped GitOps repository, and provide them using:
+	
+		export GIT_TOKEN=<token>
+		export GIT_REPO=<repo_url>
+
+# or with the flags:
+	
+		--token <token> --repo <repo_url>
+		
+# Get list of applications from a remote repository
+	
+	<BIN> app list <env_name>
+`),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			if len(args) < 1 {
+				log.G().Fatal("must enter environment name")
+			}
+
+
+			return RunAppList(cmd.Context(), &AppListOptions{
+				EnvName:      envName,
+				FS:           fs.Create(memfs.New()),
+				CloneOptions: cloneOpts,
+			})
+		},
+	}
+	cloneOpts, err := git.AddFlags(cmd)
+	util.Die(err)
+
+	return cmd
+}
+
+func RunAppList(ctx context.Context, opts *AppListOptions) error {
+
+	var (
+		err error
+//		r git.Repository
+	)
+
+	log.G().WithFields(log.Fields{
+		"repoURL":  opts.CloneOptions.URL,
+		"revision": opts.CloneOptions.Revision,
+	}).Debug("starting with options: ")
+
+	// clone repo
+	log.G().Infof("cloning git repository: %s", opts.CloneOptions.URL)
+	r, opts.FS, err = opts.CloneOptions.Clone(ctx, opts.FS)
+	if err != nil {
+		return err
+	}
+
+	log.G().Infof("using revision: \"%s\", installation path: \"%s\"", opts.CloneOptions.Revision, opts.CloneOptions.RepoRoot)
+	if !opts.FS.ExistsOrDie(store.Default.BootsrtrapDir) {
+		log.G().Fatalf("Bootstrap folder not found, please execute `repo bootstrap --installation-path %s` command", opts.CloneOptions.RepoRoot)
+	}
+
+	envExists := opts.FS.ExistsOrDie(opts.FS.Join(store.Default.EnvsDir, opts.EnvName+".yaml"))
+	if !envExists {
+		log.G().Fatalf(util.Doc(fmt.Sprintf("env '%[1]s' not found, please execute `<BIN> env create %[1]s`", opts.EnvName)))
+	}
+
+	log.G().Debug("repository is ok")
+
+	// get all apps beneath kustomize <env>\overlayes
+
+	return nil
+
 }
