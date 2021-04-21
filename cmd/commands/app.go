@@ -262,7 +262,7 @@ func NewAppListCommand() *cobra.Command {
 		
 # Get list of applications from a remote repository
 	
-	<BIN> app list <env_name>
+	<BIN> app list <project_name>
 `),
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) < 1 {
