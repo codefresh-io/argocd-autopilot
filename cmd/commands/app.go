@@ -333,9 +333,9 @@ func RunAppList(ctx context.Context, opts *AppListOptions) error {
 		return err
 	}
 
-	log.G().Infof("using revision: \"%s\", installation path: \"%s\"", opts.CloneOptions.Revision, opts.CloneOptions.RepoRoot)
+	log.G().Infof("using revision: \"%s\", installation path: \"%s\"", opts.CloneOptions.Revision, opts.FS.Root())
 	if !opts.FS.ExistsOrDie(store.Default.BootsrtrapDir) {
-		log.G().Fatalf("Bootstrap folder not found, please execute `repo bootstrap --installation-path %s` command", opts.CloneOptions.RepoRoot)
+		log.G().Fatalf("Bootstrap folder not found, please execute `repo bootstrap --installation-path %s` command", opts.FS.Root())
 	}
 
 	projExists := opts.FS.ExistsOrDie(opts.FS.Join(store.Default.ProjectsDir, opts.ProjectName+".yaml"))
@@ -348,6 +348,9 @@ func RunAppList(ctx context.Context, opts *AppListOptions) error {
 	// get all apps beneath kustomize <project>\overlayes
 
 	matches, err := billyUtils.Glob(opts.FS, fmt.Sprintf("/kustomize/*/overlays/%s", opts.ProjectName))
+	if err != nil {
+		log.G().Fatalf("failed to run glob on %s", opts.ProjectName)
+	}
 	w := tabwriter.NewWriter(os.Stdout, 0, 0, 2, ' ', 0)
 	_, _ = fmt.Fprintf(w, "PROJECT\tNAME\tDEST_NAMESPACE\tDEST_SERVER\t\n")
 
