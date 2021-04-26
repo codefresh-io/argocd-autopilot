@@ -318,19 +318,9 @@ func RunAppList(ctx context.Context, opts *AppListOptions) error {
 
 	for _, appName := range matches {
 
-		confFileName := fmt.Sprintf("%s/config.json", appName)
-		file, err := opts.FS.Open(confFileName)
+		conf, err := getConfigFileFromPath(opts.FS, appName)
 		if err != nil {
-			log.G().Fatalf("%s not found", confFileName)
-		}
-		b, err := ioutil.ReadAll(file)
-		if err != nil {
-			log.G().Fatalf("failed to read file %s", confFileName)
-		}
-		conf := application.Config{}
-		err = json.Unmarshal(b, &conf)
-		if err != nil {
-			log.G().Fatalf("failed to unmarshal file %s", confFileName)
+			return err
 		}
 
 		fmt.Fprintf(w, "%s\t%s\t%s\t%s\t\n", opts.ProjectName, conf.UserGivenName, conf.DestNamespace, conf.DestServer)
@@ -338,4 +328,23 @@ func RunAppList(ctx context.Context, opts *AppListOptions) error {
 	_ = w.Flush()
 	return nil
 
+}
+func getConfigFileFromPath(fs fs.FS,  appName string) (*application.Config, error)  {
+
+	confFileName := fmt.Sprintf("%s/config.json", appName)
+		file, err := fs.Open(confFileName)
+		if err != nil {
+			return nil, fmt.Errorf("%s not found", confFileName)
+		}
+		b, err := ioutil.ReadAll(file)
+		if err != nil {
+			return nil, fmt.Errorf("failed to read file %s", confFileName)
+		}
+		conf := application.Config{}
+		err = json.Unmarshal(b, &conf)
+		if err != nil {
+			return nil, fmt.Errorf("failed to unmarshal file %s", confFileName)
+		}
+		return &conf, nil
+	
 }
