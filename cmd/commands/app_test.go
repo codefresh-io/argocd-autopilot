@@ -338,9 +338,9 @@ func Test_getConfigFileFromPath(t *testing.T) {
 			},
 		},
 		"should fail if config.json is missing": {
-			appName: "test",
-			want:    &application.Config{},
-			wantErr: "test/config.json not found",
+			appName:  "test",
+			want:     &application.Config{},
+			wantErr:  "test/config.json not found",
 			beforeFn: nil,
 			assertFn: nil,
 		},

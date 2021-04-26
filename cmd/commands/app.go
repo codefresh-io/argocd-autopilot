@@ -7,8 +7,8 @@ import (
 	"fmt"
 	"io/ioutil"
 	"os"
-	"text/tabwriter"
 	"reflect"
+	"text/tabwriter"
 
 	"github.com/argoproj/argocd-autopilot/pkg/application"
 	"github.com/argoproj/argocd-autopilot/pkg/fs"
@@ -364,22 +364,22 @@ func RunAppList(ctx context.Context, opts *AppListOptions) error {
 	return nil
 
 }
-func getConfigFileFromPath(fs fs.FS,  appName string) (*application.Config, error)  {
+func getConfigFileFromPath(fs fs.FS, appName string) (*application.Config, error) {
 
 	confFileName := fmt.Sprintf("%s/config.json", appName)
-		file, err := fs.Open(confFileName)
-		if err != nil {
-			return nil, fmt.Errorf("%s not found", confFileName)
-		}
-		b, err := ioutil.ReadAll(file)
-		if err != nil {
-			return nil, fmt.Errorf("failed to read file %s", confFileName)
-		}
-		conf := application.Config{}
-		err = json.Unmarshal(b, &conf)
-		if err != nil {
-			return nil, fmt.Errorf("failed to unmarshal file %s", confFileName)
-		}
-		return &conf, nil
-	
+	file, err := fs.Open(confFileName)
+	if err != nil {
+		return nil, fmt.Errorf("%s not found", confFileName)
+	}
+	b, err := ioutil.ReadAll(file)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read file %s", confFileName)
+	}
+	conf := application.Config{}
+	err = json.Unmarshal(b, &conf)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal file %s", confFileName)
+	}
+	return &conf, nil
+
 }
