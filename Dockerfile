@@ -1,5 +1,7 @@
 FROM golang:1.16.3-alpine3.13 as base
 
+WORKDIR /go/src/github.com/argoproj/argocd-autopilot
+
 RUN apk -U add --no-cache git ca-certificates && update-ca-certificates
 
 RUN adduser \
@@ -11,12 +13,11 @@ RUN adduser \
     --uid 10001 \
     autopilot
 
-WORKDIR /go/src/github.com/argoproj/argocd-autopilot
 
 COPY go.mod .
 COPY go.sum .
 
-RUN go mod vendor
+RUN go mod download -x
 RUN go mod verify
 
 ############################### CLI ###############################
@@ -25,32 +26,29 @@ FROM golang:1.16.3-alpine3.13 as autopilot-build
 
 WORKDIR /go/src/github.com/argoproj/argocd-autopilot
 
-ARG OUT_DIR
-
 RUN apk -U add --no-cache git make
 
 COPY --from=base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=base /go/pkg/mod /go/pkg/mod
 
 COPY . .
 
-ENV GOPATH ""
+ENV GOPATH /go
 ENV GOBIN /go/bin
 
-RUN make ./${OUT_DIR}/autopilot-linux-amd64
+RUN make local DEV_MODE=false
 
 ### Run
 FROM alpine:3.13 as autopilot
 
 WORKDIR /go/src/github.com/argoproj/argocd-autopilot
 
-ARG OUT_DIR
-
 # copy ca-certs and user details
 COPY --from=base /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=base /etc/passwd /etc/passwd
 COPY --from=base /etc/group /etc/group
-COPY --chown=autopilot:autopilot --from=autopilot-build /go/src/github.com/argoproj/argocd-autopilot/${OUT_DIR}/autopilot-linux-amd64 /usr/local/bin/autopilot
+COPY --chown=autopilot:autopilot --from=autopilot-build /go/src/github.com/argoproj/argocd-autopilot/dist/* /usr/local/bin/argocd-autopilot
 
 USER autopilot:autopilot
 
-ENTRYPOINT [ "autopilot" ]
+ENTRYPOINT [ "argocd-autopilot" ]

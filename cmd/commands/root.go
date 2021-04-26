@@ -54,8 +54,8 @@ func postInitCommands(commands []*cobra.Command) {
 
 func presetRequiredFlags(cmd *cobra.Command) {
 	cmd.Flags().VisitAll(func(f *pflag.Flag) {
-		if viper.IsSet(f.Name) && viper.GetString(f.Name) != "" {
-			util.Die(cmd.Flags().Set(f.Name, viper.GetString(f.Name)))
+		if viper.IsSet(f.Name) && f.Value.String() == "" {
+			die(cmd.Flags().Set(f.Name, viper.GetString(f.Name)))
 		}
 	})
 	cmd.Flags().SortFlags = false
