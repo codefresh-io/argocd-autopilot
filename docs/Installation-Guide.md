@@ -2,6 +2,7 @@
 
 To use the `argocd-autopilot` CLI you need to download the latest binary from the [git release page](https://github.com/argoproj-labs/argocd-autopilot/releases).
 
+<<<<<<< HEAD
 ## Linux
 ```bash
 # get the latest version or change to a specific version
@@ -17,11 +18,14 @@ mv ./argocd-autopilot-* /usr/local/bin/argocd-autopilot
 argocd-autopilot version
 ```
 
+=======
+>>>>>>> main
 ## Mac
 ```bash
 # get the latest version or change to a specific version
 VERSION=$(curl --silent "https://api.github.com/repos/argoproj-labs/argocd-autopilot/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
 
+<<<<<<< HEAD
 # download and extract the binary
 curl -L --output - https://github.com/argoproj-labs/argocd-autopilot/releases/download/$VERSION/argocd-autopilot-darwin-amd64.gz | tar zx
 
@@ -30,4 +34,9 @@ mv ./argocd-autopilot-* /usr/local/bin/argocd-autopilot
 
 # check the installation
 argocd-autopilot version
+=======
+# download the archive
+curl -L -o ./mockery.tar.gz -- https://github.com/vektra/mockery/releases/download/v1.1.1/mockery_1.1.1_$(shell uname -s)_$(shell uname -m).tar.gz
+
+>>>>>>> main
 ```

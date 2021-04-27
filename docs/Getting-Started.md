@@ -9,6 +9,11 @@ This guide assumes you are familiar with Argo CD and its basic concepts. See the
 * Have a [kubeconfig](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/) file (default location is `~/.kube/config`)
 
 ### Git authentication
+<<<<<<< HEAD
+=======
+Make sure to have a valid token (https://docs.github.com/en/github/authenticating-to-github/creating-a-personal-access-token)
+![Github token](assets/github_token.png)
+>>>>>>> main
 ```
 export GIT_TOKEN=ghp_PcZ...IP0
 ```
