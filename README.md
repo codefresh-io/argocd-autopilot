@@ -24,7 +24,7 @@ From that point on, the use can create Projects and Applications that belong to 
 An application can be added to a project from a public git repo + path, or from a directory in the local filesystem.
 
 ## Architecture
-![Argo-CD Autopilot Architecture](assets/architecture.png)
+![Argo-CD Autopilot Architecture](/docs/assets/architecture.png)
 
 Autopilot communicates with the cluster directly **only** during the bootstrap phase, when it deploys Argo-CD. After that, most commands will only require access to the GitOps repository. When adding a Project or Application to a remote k8s cluster, autopilot will require access to the Argo-CD server.
 
