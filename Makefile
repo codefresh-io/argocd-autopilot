@@ -122,8 +122,12 @@ serve-docs:
 	docker run ${MKDOCS_RUN_ARGS} --rm -it -p 8000:8000 -v $(shell pwd):/docs ${MKDOCS_DOCKER_IMAGE} serve -a 0.0.0.0:8000
 
 .PHONY: release
-release:
+release: tidy check-worktree fetch-tags
 	./hack/release.sh
+
+.PHONY: fetch-tags
+fetch-tags:
+	git fetch --tags
 
 .PHONY: clean
 clean:
