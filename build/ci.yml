@@ -122,7 +122,7 @@ steps:
     type: push
     candidate: ${{build}}
     tags:
-    - ${{CF_BRANCH_TAG_NORMALIZED}}
+    - dev-${{CF_BRANCH_TAG_NORMALIZED}}
     when:
       steps:
       - name: build
