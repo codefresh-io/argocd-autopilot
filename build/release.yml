@@ -172,6 +172,9 @@ steps:
       - name: build_binaries
         on:
         - success
+      - name: build
+        on:
+        - success
 
   # codegen:
   #   <<: *deps
@@ -196,12 +199,9 @@ steps:
     - ${{CF_BRANCH_TAG_NORMALIZED}}
     when:
       steps:
-      - name: build
+      - name: create_release
         on:
         - success
-      # - name: codegen
-      #   on:
-      #   - success
     scale:
       push_quay_dev:
         title: push to quay.io
