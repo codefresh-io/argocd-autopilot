@@ -59,7 +59,6 @@ steps:
     stage: Prepare
     title: download go modules
     commands:
-    - env
     - go mod download -x
     when:
       steps:
@@ -165,7 +164,9 @@ steps:
     stage: Release
     title: create github release
     commands:
-    - gh release create
+    - export GIT_REPO=${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    - export GIT_BRANCH=${{CF_BRANCH}}
+    - make release
     when:
       steps:
       - name: build_binaries
@@ -187,7 +188,7 @@ steps:
 
   push_prod:
     stage: Release
-    title: push with dev tags
+    title: promote images
     type: push
     candidate: ${{build}}
     tags:
@@ -203,8 +204,11 @@ steps:
       #   - success
     scale:
       push_quay_dev:
+        title: push to quay.io
         registry: "${{REGISTRY_INTEGRATION_QUAY}}"
       push_dockerhub_dev:
+        title: push to dockerhub
         registry: "${{REGISTRY_INTEGRATION_DOCKERHUB}}"
       push_gcr_enterprise_dev:
+        title: push to gcr
         registry: "${{REGISTRY_INTEGRATION_ENTERPRISE}}"
