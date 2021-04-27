@@ -8,8 +8,8 @@ if [[ -z "$GIT_REPO" ]]; then
     exit 1
 fi
 
-if [[ -z "$GIT_TOKEN" ]]; then
-    echo "error: git token not defined"
+if [[ -z "$GITHUB_TOKEN" ]]; then
+    echo "error: GITHUB_TOKEN token not defined"
     exit 1
 fi
 

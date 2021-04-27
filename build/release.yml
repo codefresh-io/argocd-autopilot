@@ -59,7 +59,6 @@ steps:
     stage: Prepare
     title: download go modules
     commands:
-    - env
     - go mod download -x
     when:
       steps:
