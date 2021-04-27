@@ -188,7 +188,7 @@ steps:
 
   push_prod:
     stage: Release
-    title: push with dev tags
+    title: promote images
     type: push
     candidate: ${{build}}
     tags:
