@@ -94,6 +94,7 @@ steps:
     stage: Test
     type: codecov-reporter
     title: report code coverage
+    fail_fast: false
     arguments:
       codecov_integration: ${{CODECOV_INTEGRATION}}
     when:
@@ -155,9 +156,6 @@ steps:
       - name: lint
         on:
         - success
-      - name: codecov-report
-        on:
-        - success
   
   create_release:
     <<: *deps
@@ -199,7 +197,10 @@ steps:
     - ${{CF_BRANCH_TAG_NORMALIZED}}
     when:
       steps:
-      - name: create_release
+      - name: build_binaries
+        on:
+        - success
+      - name: build
         on:
         - success
     scale:
