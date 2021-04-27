@@ -70,7 +70,7 @@ $(OUT_DIR)/$(CLI_NAME)-linux-s390x: GO_FLAGS='GOOS=linux GOARCH=s390x CGO_ENABLE
 
 $(OUT_DIR)/$(CLI_NAME)-%.gz:
 	@make $(OUT_DIR)/$(CLI_NAME)-$*
-	gzip --force --keep $(OUT_DIR)/$(CLI_NAME)-$*
+	cd $(OUT_DIR) && tar -czvf $(CLI_NAME)-$*.gz $(CLI_NAME)-$* && cd ..
 
 $(OUT_DIR)/$(CLI_NAME)-%.sha256:
 	@make $(OUT_DIR)/$(CLI_NAME)-$*.gz
