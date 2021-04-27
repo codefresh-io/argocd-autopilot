@@ -36,4 +36,4 @@ Autopilot communicates with the cluster directly **only** during the bootstrap p
 * Use a different cluster from the one Argo-CD is running on, as a default cluster for a Project, or a target cluster for a specific Application.
 
 ## Development Status
-Argo-CD autopilot is currently under active development. Some of the basic commands are not yet implemented, but we hope to complete them in the coming weeks.
+Argo-CD autopilot is currently under active development. Some of the basic commands are not yet implemented, but we hope to complete most of them in the coming weeks.
