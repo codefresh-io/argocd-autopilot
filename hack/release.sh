@@ -41,7 +41,7 @@ if [[ "$?" == "0" ]]; then
     fi
 
     echo "running: gh release create --repo $GIT_REPO -t $GIT_BRANCH -F $FILE --target $GIT_BRANCH --prerelease=$PRERELEASE ./dist/*.gz ./dist/*.sha256"
-    gh release create --repo $GIT_REPO -t $GIT_BRANCH -F $FILE --target $GIT_BRANCH --prerelease=$PRERELEASE ./dist/*.gz ./dist/*.sha256
+    gh release create --repo $GIT_REPO -t $GIT_BRANCH -F $FILE --target $GIT_BRANCH --prerelease=$PRERELEASE $GIT_BRANCH ./dist/*.gz ./dist/*.sha256
 else 
     echo "not on release branch: $GIT_BRANCH"
     exit 1
