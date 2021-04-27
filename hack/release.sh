@@ -19,6 +19,7 @@ fi
 
 if [[ "$?" == "0" ]]; then
     echo "on release branch: $GIT_BRANCH"
+    echo ""
     echo "uploading files:"
     ls -1a ./dist/*.gz ./dist/*.sha256
     echo ""
@@ -36,10 +37,11 @@ if [[ "$?" == "0" ]]; then
 
     if [[ "$PRE_RELEASE" ]]; then
         echo "using pre-release"
+        echo ""
     fi
 
-    echo "running: gh release create --repo $GIT_REPO -t $GIT_BRANCH -F $FILE --target $GIT_BRANCH --prerelease $PRERELEASE ./dist/*.gz ./dist/*.sha256"
-    gh release create --repo $GIT_REPO -t $GIT_BRANCH -F $FILE --target $GIT_BRANCH --prerelease $PRERELEASE ./dist/*.gz ./dist/*.sha256
+    echo "running: gh release create --repo $GIT_REPO -t $GIT_BRANCH -F $FILE --target $GIT_BRANCH --prerelease=$PRERELEASE ./dist/*.gz ./dist/*.sha256"
+    gh release create --repo $GIT_REPO -t $GIT_BRANCH -F $FILE --target $GIT_BRANCH --prerelease=$PRERELEASE ./dist/*.gz ./dist/*.sha256
 else 
     echo "not on release branch: $GIT_BRANCH"
     exit 1

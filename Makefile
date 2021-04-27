@@ -121,10 +121,9 @@ build-docs:
 serve-docs:
 	docker run ${MKDOCS_RUN_ARGS} --rm -it -p 8000:8000 -v $(shell pwd):/docs ${MKDOCS_DOCKER_IMAGE} serve -a 0.0.0.0:8000
 
-.PHONY: create-release
-create-release:
-	OUT_DIR=$(OUT_DIR) \
-	./release.sh
+.PHONY: release
+release:
+	./hack/release.sh
 
 .PHONY: clean
 clean:

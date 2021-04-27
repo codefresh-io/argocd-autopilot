@@ -165,7 +165,9 @@ steps:
     stage: Release
     title: create github release
     commands:
-    - gh release create
+    - export GIT_REPO=${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}
+    - export GIT_BRANCH=${{CF_BRANCH}}
+    - make release
     when:
       steps:
       - name: build_binaries
