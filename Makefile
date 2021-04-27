@@ -4,8 +4,8 @@ OUT_DIR=dist
 CLI_NAME?=argocd-autopilot
 IMAGE_NAMESPACE?=argoproj
 
-INSTALLATION_MANIFESTS_URL="https://raw.githubusercontent.com/argoproj/argocd-autopilot/$(VERSION)/manifests/install"
-INSTALLATION_MANIFESTS_NAMESPACED_URL="https://raw.githubusercontent.com/argoproj/argocd-autopilot/$(VERSION)/manifests/namespace-install"
+INSTALLATION_MANIFESTS_URL="github.com/argoproj-labs/argocd-autopilot/manifests?ref=$(VERSION)"
+INSTALLATION_MANIFESTS_NAMESPACED_URL="github.com/argoproj-labs/argocd-autopilot/manifests/namespace-install?ref=$(VERSION)"
 
 DEV_INSTALLATION_MANIFESTS_URL="manifests/"
 DEV_INSTALLATION_MANIFESTS_NAMESPACED_URL="manifests/namespace-install"
