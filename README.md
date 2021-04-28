@@ -70,10 +70,14 @@ argocd-autopilot version
 
 # 4. Install your first application on your project
 
-    argocd-autopilot app create demoapp --app github.com/argoproj-labs/argocd-autopilot/examples/demo-app/ --p my-project
-
+    argocd-autopilot app create demoapp --app github.com/argoproj-labs/argocd-autopilot/examples/demo-app/ -p my-project
 ```
-Head over to our [Getting Started](/docs/Getting-Started.md) guide for further details.
+
+Now, if you go to your Argo-CD UI, you should see something similar to this:
+
+![](./docs/assets/getting_started_apps_1.png)
+
+Head over to our [Getting Started](./docs/Getting-Started.md) guide for further details.
 
 ## How it works
 The autopilot bootstrap command will deploy an Argo-CD manifest to a target k8s cluster, and will commit an Argo-CD Application manifest under a specific directory in your GitOps repository. This Application will manage the Argo-CD installation itself - so after running this command, you will have an Argo-CD deployment that manages itself through GitOps.
@@ -83,7 +87,7 @@ From that point on, the use can create Projects and Applications that belong to 
 An application can be added to a project from a public git repo + path, or from a directory in the local filesystem.
 
 ## Architecture
-![Argo-CD Autopilot Architecture](/docs/assets/architecture.png)
+![Argo-CD Autopilot Architecture](./docs/assets/architecture.png)
 
 Autopilot communicates with the cluster directly **only** during the bootstrap phase, when it deploys Argo-CD. After that, most commands will only require access to the GitOps repository. When adding a Project or Application to a remote k8s cluster, autopilot will require access to the Argo-CD server.
 
