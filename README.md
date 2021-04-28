@@ -1,5 +1,6 @@
 # Argo-CD Autopilot
-[![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/codefresh-inc/argocd-autopilot%2Frelease?type=cf-1&key=eyJhbGciOiJIUzI1NiJ9.NTY3MmQ4ZGViNjcyNGI2ZTM1OWFkZjYy.AN2wExsAsq7FseTbVxxWls8muNx_bBUnQWQVS8IgDTI)]( https://g.codefresh.io/pipelines/edit/new/builds?id=60881f8199c9564ef31aac61&pipeline=release&projects=argocd-autopilot&projectId=608532835cbc54366d7483cb) [![codecov](https://codecov.io/gh/argoproj-labs/argocd-autopilot/branch/main/graph/badge.svg?token=IDyZNfRUfY)](https://codecov.io/gh/argoproj-labs/argocd-autopilot)
+[![Codefresh build status]( https://g.codefresh.io/api/badges/pipeline/codefresh-inc/argocd-autopilot%2Frelease?type=cf-1)]( https://g.codefresh.io/public/accounts/codefresh-inc/pipelines/new/60881f8199c9564ef31aac61) [![codecov](https://codecov.io/gh/argoproj-labs/argocd-autopilot/branch/main/graph/badge.svg?token=IDyZNfRUfY)](https://codecov.io/gh/argoproj-labs/argocd-autopilot) [![Documentation Status](https://readthedocs.org/projects/argocd-autopilot/badge/?version=latest)](https://argocd-autopilot.readthedocs.io/en/latest/?badge=latest)
+
 
 ## Introduction
 
@@ -10,10 +11,67 @@ It can:
 - bootstrap a new argo cd installation.
 - install and manage argo-cd projects and application with ease.
 
+## Installation
+### Mac
+
+```bash
+# get the latest version or change to a specific version
+VERSION=$(curl --silent "https://api.github.com/repos/argoproj-labs/argocd-autopilot/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+
+# download and extract the binary
+curl -L --output - https://github.com/argoproj-labs/argocd-autopilot/releases/download/$VERSION/argocd-autopilot-darwin-amd64.gz | tar zx
+
+# move the binary to your $PATH
+mv ./argocd-autopilot-* /usr/local/bin/argocd-autopilot
+
+# check the installation
+argocd-autopilot version
+```
+
+### Linux
+```bash
+# get the latest version or change to a specific version
+VERSION=$(curl --silent "https://api.github.com/repos/argoproj-labs/argocd-autopilot/releases/latest" | grep '"tag_name"' | sed -E 's/.*"([^"]+)".*/\1/')
+
+# download and extract the binary
+curl -L --output - https://github.com/argoproj-labs/argocd-autopilot/releases/download/$VERSION/argocd-autopilot-linux-amd64.gz | tar zx
+
+# move the binary to your $PATH
+mv ./argocd-autopilot-* /usr/local/bin/argocd-autopilot
+
+# check the installation
+argocd-autopilot version
+```
+
 ## Getting Started
 ```
-argocd-autopilot repo create --owner <owner> --name <name> --token <git_token>
-argocd-autopilot repo bootstrap --repo https://github.com/owner/name --token <git_token>
+# Most of the commands need your git token, you can provide with --token to each command
+# or export it beforehand:
+
+    export GIT_TOKEN=<YOUR_TOKEN>
+
+# 1. Create a new git repository
+
+    argocd-autopilot repo create --owner <owner> --name <name>
+
+# At this point you can specify the gitops repo in each command with --repo
+# or you can export it as well:
+
+    export GIT_REPO=<REPO_URL>
+
+# 2. Run the bootstrap installation on your current kubernetes context.
+# This will install argo-cd as well as the application-set controller.
+
+    argocd-autopilot repo bootstrap
+
+# 3. Create your first project
+
+    argocd-autopilot project create my-project
+
+# 4. Install your first application on your project
+
+    argocd-autopilot app create 
+
 ```
 Head over to our [Getting Started](/docs/Getting-Started.md) guide for further details.
 
