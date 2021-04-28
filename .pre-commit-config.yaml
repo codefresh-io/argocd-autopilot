@@ -1,0 +1,12 @@
+- repo: local
+  hooks:
+  - id: pre-comit
+    name: pre-commit linting
+    language: system
+    entry: make pre-commit
+    stages: [ 'commit' ]
+  - id: pre-push
+    name: pre-push testing
+    language: system
+    entry: make pre-push
+    stages: [ 'push' ]
