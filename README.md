@@ -70,7 +70,7 @@ argocd-autopilot version
 
 # 4. Install your first application on your project
 
-    argocd-autopilot app create 
+    argocd-autopilot app create demoapp --app github.com/argoproj-labs/argocd-autopilot/examples/demo-app/ --p my-project
 
 ```
 Head over to our [Getting Started](/docs/Getting-Started.md) guide for further details.
@@ -86,6 +86,8 @@ An application can be added to a project from a public git repo + path, or from 
 ![Argo-CD Autopilot Architecture](/docs/assets/architecture.png)
 
 Autopilot communicates with the cluster directly **only** during the bootstrap phase, when it deploys Argo-CD. After that, most commands will only require access to the GitOps repository. When adding a Project or Application to a remote k8s cluster, autopilot will require access to the Argo-CD server.
+
+You can read more about it in the [official proposal doc](https://docs.google.com/document/d/1gxKxaMQzH9nNDWW9mZV5_cS7EO4S-pm1s_u5aMK-PZQ/edit?usp=sharing).
 
 ## Features
 * Opinionated way to build a multi-project multi-application system, using GitOps principles.

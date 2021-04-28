@@ -59,6 +59,7 @@ steps:
     stage: Prepare
     title: download go modules
     commands:
+    - make clean
     - go mod download -x
     when:
       steps:
