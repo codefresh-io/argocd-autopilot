@@ -120,7 +120,7 @@ steps:
 
   build_binaries:
     <<: *deps
-    stage: Release
+    stage: Build
     title: build binaries
     commands:
     - make ./dist/argocd-autopilot-${TARGET}.sha256 DEV_MODE=false
