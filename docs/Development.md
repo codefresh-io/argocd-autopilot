@@ -12,10 +12,11 @@ This guide is meant for developers who want to contribute or debug `argocd-autop
 
 ### Releasing a new version:
 1. Checkout to a release branch: `v0.X.X`.
-2. Add what you need to `./docs/releases/release_notes.md`.
-3. Create a new PR to the `main` branch.
-4. After CI is green, add a `/release` comment to the PR to trigger the release pipeline (maintainers only).
-5. After Release build is finished you can merge back to `main`.
+2. Change the `VERSION` in the Makefile to match the new version.
+3. Add what you need to `./docs/releases/release_notes.md`.
+4. Create a new PR to the `main` branch.
+5. After CI is green, add a `/release` comment to the PR to trigger the release pipeline (maintainers only).
+6. After Release build is finished you can merge back to `main`.
 
 ### Using pre-commit:
 With pre-commit installed and properly set-up, both the pre-commit and pre-push hooks will run automatically.
