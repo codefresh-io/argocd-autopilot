@@ -13,6 +13,7 @@ import (
 	fsmocks "github.com/argoproj/argocd-autopilot/pkg/fs/mocks"
 	"github.com/argoproj/argocd-autopilot/pkg/git"
 	gitmocks "github.com/argoproj/argocd-autopilot/pkg/git/mocks"
+	"github.com/argoproj/argocd-autopilot/pkg/util"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
@@ -50,7 +51,7 @@ func TestRunProjectCreate(t *testing.T) {
 			getInstallationNamespace: func(_ fs.FS) (string, error) {
 				return "", fmt.Errorf("failure namespace")
 			},
-			wantErr: "Bootstrap folder not found, please execute ` repo bootstrap --installation-path /` command",
+			wantErr: util.Doc("Bootstrap folder not found, please execute `<BIN> repo bootstrap --installation-path /` command"),
 		},
 		"should handle failure when project exists": {
 			opts: &ProjectCreateOptions{
