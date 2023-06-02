@@ -7,7 +7,7 @@ require (
 	github.com/argoproj/applicationset v0.4.1
 	github.com/argoproj/argo-cd/v2 v2.4.6
 	github.com/argoproj/gitops-engine v0.7.0
-	github.com/briandowns/spinner v1.18.1
+	github.com/briandowns/spinner v1.23.0
 	github.com/ghodss/yaml v1.0.0
 	github.com/go-git/go-billy/v5 v5.3.1
 	github.com/go-git/go-git/v5 v5.4.2
@@ -195,7 +195,7 @@ require (
 	golang.org/x/oauth2 v0.0.0-20220608161450-d0670ef3b1eb // indirect
 	golang.org/x/sync v0.0.0-20210220032951-036812b2e83c // indirect
 	golang.org/x/sys v0.0.0-20220520151302-bc2c85ada10a // indirect
-	golang.org/x/term v0.0.0-20210927222741-03fcf44c2211 // indirect
+	golang.org/x/term v0.1.0 // indirect
 	golang.org/x/text v0.3.7 // indirect
 	golang.org/x/time v0.0.0-20210723032227-1f47c861a9ac // indirect
 	gomodules.xyz/envconfig v1.3.1-0.20190308184047-426f31af0d45 // indirect
